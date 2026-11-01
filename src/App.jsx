@@ -7,6 +7,7 @@ import PantryManager from './components/PantryManager';
 import RecipeCard from './components/RecipeCard';
 import QuickCommerceModal from './components/QuickCommerceModal';
 import WhyRecommendModal from './components/WhyRecommendModal';
+import CookModeModal from './components/CookModeModal';
 import ApiInspector from './components/ApiInspector';
 import SpotlightWrapper from './components/SpotlightWrapper';
 import BackgroundFloatingFood from './components/BackgroundFloatingFood';
@@ -46,6 +47,15 @@ export default function App() {
   // Why We Recommend This Modal State
   const [whyModalOpen, setWhyModalOpen] = useState(false);
   const [whyModalRecipe, setWhyModalRecipe] = useState(null);
+
+  // Interactive Cook Mode State
+  const [cookModeModalOpen, setCookModeModalOpen] = useState(false);
+  const [cookModeRecipe, setCookModeRecipe] = useState(null);
+
+  const handleOpenCookMode = (recipe) => {
+    setCookModeRecipe(recipe);
+    setCookModeModalOpen(true);
+  };
 
   // Toggle selection of ingredient for recipe engine
   const handleToggleSelectIngredient = (id) => {
@@ -397,6 +407,7 @@ export default function App() {
                         onOpenWhyRecommend={handleOpenWhyRecommend}
                         onAddIngredientToPantry={handleAddCustomItem}
                         onAddAllMissingToPantry={handleAddAllMissingToPantry}
+                        onOpenCookMode={handleOpenCookMode}
                       />
                     ))}
                   </div>
@@ -437,6 +448,15 @@ export default function App() {
         isOpen={quickCommerceModalOpen}
         onClose={() => setQuickCommerceModalOpen(false)}
         cartData={cartData}
+      />
+
+      {/* Interactive Cook Mode Modal */}
+      <CookModeModal
+        isOpen={cookModeModalOpen}
+        onClose={() => setCookModeModalOpen(false)}
+        recipe={cookModeRecipe}
+        activityName={currentActivityObj?.name}
+        timingLabel={currentTimingObj?.label}
       />
 
       {/* Footer */}

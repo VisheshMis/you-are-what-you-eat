@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Sparkles, ShoppingBag, Clock, Atom, ArrowRight, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Check, Plus } from 'lucide-react';
+import { Sparkles, ShoppingBag, Clock, Atom, ArrowRight, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Check, Plus, ChefHat } from 'lucide-react';
 
 export default function RecipeCard({
   recipe,
@@ -10,7 +10,8 @@ export default function RecipeCard({
   onOpenQuickCommerce,
   onOpenWhyRecommend,
   onAddIngredientToPantry,
-  onAddAllMissingToPantry
+  onAddAllMissingToPantry,
+  onOpenCookMode
 }) {
   const [showSubstitutions, setShowSubstitutions] = useState(false);
   const [appliedSubs, setAppliedSubs] = useState({});
@@ -434,23 +435,39 @@ export default function RecipeCard({
       {/* Bottom Action Footer */}
       <div className="p-6 bg-parchment-50 border-t border-parchment-200">
         {missingIngredients.length > 0 ? (
-          <button
-            onClick={() => onOpenQuickCommerce(recipe, missingIngredients, totalCartPrice, fastestEta, storeName)}
-            className="w-full py-3.5 px-4 bg-culinary-accent hover:bg-orange-600 text-white rounded-2xl font-bold text-sm shadow-glow-accent transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              <span>Get Missing ({missingIngredients.length} items) in {fastestEta}</span>
-            </div>
-            <div className="flex items-center gap-1 font-mono text-xs">
-              <span>₹{totalCartPrice}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
+          <div className="flex flex-col gap-2.5">
+            <button
+              onClick={() => onOpenQuickCommerce(recipe, missingIngredients, totalCartPrice, fastestEta, storeName)}
+              className="w-full py-3.5 px-4 bg-culinary-accent hover:bg-orange-600 text-white rounded-2xl font-bold text-sm shadow-glow-accent transition-all flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-4 h-4" />
+                <span>Get Missing ({missingIngredients.length} items) in {fastestEta}</span>
+              </div>
+              <div className="flex items-center gap-1 font-mono text-xs">
+                <span>₹{totalCartPrice}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => onOpenCookMode && onOpenCookMode(recipe)}
+              className="w-full py-2.5 px-3 bg-white hover:bg-parchment-100 text-stone-700 hover:text-culinary-dark border border-parchment-300 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+            >
+              <ChefHat className="w-4 h-4 text-culinary-deep" />
+              <span>Preview Cooking Steps &amp; Portion Scaler</span>
+            </button>
+          </div>
         ) : (
-          <div className="w-full py-3 px-4 bg-emerald-600 text-white rounded-2xl font-bold text-sm text-center flex items-center justify-center gap-2 shadow-sm">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>Pantry Ready • Cook Immediately!</span>
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => onOpenCookMode && onOpenCookMode(recipe)}
+              className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-sm text-center flex items-center justify-center gap-2 shadow-sm transition-all"
+            >
+              <ChefHat className="w-4 h-4" />
+              <span>Start Interactive Cook Mode</span>
+            </button>
           </div>
         )}
       </div>
